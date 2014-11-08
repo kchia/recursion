@@ -17,11 +17,15 @@ var stringifyJSON = function(obj) {
         result += '"' + obj + '"';
   } else if(obj === null){
         result += 'null';
-  } else {
+  } else if (Object.prototype.toString.call(obj) === "[object Object]"){
       for(var key in obj){
-        result += '"'+ key + '"' + ':' + stringifyJSON(obj[key]) + ',';
-        }
-        return '{' + result.slice(0,result.length-1) + '}';
+          if (key === 'functions' || key === 'undefined'){
+            result += '';
+          } else {
+            result += '"' + key + '"' + ':' + stringifyJSON(obj[key]) + ',';
+          }
+      }
+      return '{' + result.slice(0,result.length-1) + '}';
   }
   return result;
 };
